@@ -2,11 +2,35 @@
 	<head>
 		<title>Праздник к нам приходит</title>
         <meta charset='utf-8' />
-        
+        <script src="NMJ.js"></script>
+        <script src="init.js"></script>
+        <script src="colors.js"></script>
 	</head>
-	<body>
-		<script>
-
-		</script>
-	</body>
+    <body onload="onClick()">
+                  <canvas width="600" height="600" id="cvs"></canvas></br>
+                Choose your destiny:
+                  <select id="methods">
+                      <option value="Newton">     Newton</option>
+                      <option value="Mandelbrot"> Mandelbrot</option>
+                      <option value="Julia">      Julia</option>
+                  </select></br>
+                Number of iteration:
+                  <input type="number" min="0" max="100" step="10" value="50" id="number"></br>
+                Skin Color:
+                  <select name="menu" id="colors">
+                      <option value="classic">Classic</option>
+                      <option value="level">  Levels</option>
+                      <option value="zebra">  Zebra</option>
+                      <option value="hybrid"> Hybrid</option>
+                  </select></br>
+                Constant Julia:</br>
+                X : <input type="number" id="x" value="-0.12" size="1"></br>
+                Y : <input type="number" id="y" value="0.74" size="1"></br>
+                Click to Zoom:
+                  <select id="zoom">
+                    <option value="in">in</option>
+                    <option value="out">out</option>
+                  </select></br>
+                <input type="button" onclick="doFractalThing(-2,2,2,-2)" value="Draw"></br>
+  	</body>
 </html>
