@@ -28,59 +28,84 @@ function Canvas_settings(){
         var j = y*(this.bottom - this.top)/ (this.height - 1) + this.top;
         return {x: i, y: j};
     };
-    this.chooseFunction = function (x,y){
-        switch (this.method) {
-            case "Newton":
-                return GetNewton(x,y);
-            case  "Mandelbrot":
-                return GetMandelbrot(x,y);
-            case "Julia":
-                return GetJulia(x,y);
-        }
-    };
     this.chooseColor = function (d){
         switch (this.color){
             case "classic":
                 if (this.method == "Newton"){
-                    return Color_Classic_Newton(d.att);
+                    return toColor_Classic_Newton(d.att);
                 }
-                return Color_Classic(d);
+                return toColor_Classic(d);
             case "level":
                 if (this.method == "Newton"){
-                    return Color_level(d.it);
+                    return toColor_level(d.it);
                 }
-                return Color_level(d);
+                return toColor_level(d);
             case "zebra":
                 if (this.method == "Newton"){
-                    return Color_Zebra(d.it);
+                    return toColor_Zebra(d.it);
                 }
-                return Color_Zebra(d);
+                return toColor_Zebra(d);
             case "hybrid":
                 if (this.method == "Newton")
-                    return Color_Hybrid(d.att, d.it);
+                    return toColor_Hybrid(d.att, d.it);
                 else{
-                  console.log("No hybrid color for nonNewton");
-                  break;
+                    location.replace('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+                    break;
                 }
         }
     };
 }
 cvs = new Canvas_settings();
+function drawPoints(imageData, methodColor, iterations){
+          var pointColor = methodColor;
+          imageData.data[4 * (iterations[0] + cvs.width * iterations[1]) + 0] = pointColor[0];
+          imageData.data[4 * (iterations[0] + cvs.width * iterations[1]) + 1] = pointColor[1];
+          imageData.data[4 * (iterations[0] + cvs.width * iterations[1]) + 2] = pointColor[2];
+          imageData.data[4 * (iterations[0] + cvs.width * iterations[1]) + 3] = pointColor[3];
+}
+function drawInCycleNewton(imageData){
+  for (var i = 0; i < cvs.width; ++i) {
+      for (var j = 0; j < cvs.height; ++j) {
+          var iterations = [i, j];
+          var point = cvs.getComplexCoordinats(i, j);
+          drawPoints(imageData, cvs.chooseColor(setAttractorNewton(point.x, point.y, 0, cvs.number)), iterations);
+      }
+    }
+}
+function drawInCycleMandelbrot(imageData){
+  for (var i = 0; i < cvs.width; ++i) {
+      for (var j = 0; j < cvs.height; ++j) {
+          var iterations = [i, j];
+          var point = cvs.getComplexCoordinats(i, j);
+          drawPoints(imageData, cvs.chooseColor(Mandel_Distances(point.x, point.y, cvs.number)), iterations);
+      }
+    }
+}
+function drawInCycleJulia(imageData){
+  for (var i = 0; i < cvs.width; ++i) {
+      for (var j = 0; j < cvs.height; ++j) {
+          var iterations = [i, j];
+          var point = cvs.getComplexCoordinats(i, j);
+          drawPoints(imageData, cvs.chooseColor(setIterJulia(point.x, point.y, parseFloat(cvs.x), parseFloat(cvs.y), cvs.number)), iterations);
+      }
+    }
+}
 function doFractalThing(left, top, right, bottom){
     cvs.newCoords(left,top,right,bottom);
     cvs.getElements();
     var canvas = document.getElementById("cvs");
     var context = canvas.getContext('2d');
     var imageData = context.createImageData(cvs.width, cvs.height);
-    for (var i = 0; i < cvs.width; ++i) {
-        for (var j = 0; j < cvs.height; ++j) {
-            var point = cvs.getComplexCoordinats(i, j);
-            var pointColor = cvs.chooseFunction(point.x, point.y);
-            imageData.data[4 * (i + cvs.width * j) + 0] = pointColor[0];
-            imageData.data[4 * (i + cvs.width * j) + 1] = pointColor[1];
-            imageData.data[4 * (i + cvs.width * j) + 2] = pointColor[2];
-            imageData.data[4 * (i + cvs.width * j) + 3] = pointColor[3];
-        }
+    switch (cvs.method) {
+        case "Newton":
+            drawInCycleNewton(imageData);
+            break;
+        case  "Mandelbrot":
+            drawInCycleMandelbrot(imageData);
+            break;
+        case "Julia":
+            drawInCycleJulia(imageData);
+            break;
     }
     context.putImageData(imageData, 0, 0);
 }

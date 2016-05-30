@@ -1,4 +1,4 @@
-function Color_Classic(d){
+function toColor_Classic(d){
   if(d == 0){
     return [0, 0, 0, 255];
   }
@@ -6,7 +6,7 @@ function Color_Classic(d){
     return [255, 255, 255, 255];
   }
 }
-function Color_Classic_Newton(attract){
+function toColor_Classic_Newton(attract){
     var red = 0;
     var green = 0;
     var blue = 0;
@@ -24,7 +24,7 @@ function Color_Classic_Newton(attract){
     }
     return [red, green, blue, opacity];
 }
-function Color_Zebra(number){
+function toColor_Zebra(number){
   if ((number%2) == 0){
     return [0, 0, 0, 255];
   }
@@ -32,7 +32,7 @@ function Color_Zebra(number){
     return [255, 255, 255, 255];
   }
 }
-function Color_level(number){
+function toColor_level(number){
     var k = number, brightSet;
     number = cvs.number;
     if (number>1 == true){
@@ -43,7 +43,7 @@ function Color_level(number){
     }
     return [brightSet, brightSet, 0 , 255];
 }
-function Color_Hybrid(attract ,number){
+function toColor_Hybrid(attract ,number){
     var opacity = 255, red = 0, green = 0, blue = 0;
     var k = number;
     number = cvs.number;

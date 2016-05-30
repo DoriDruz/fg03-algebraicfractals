@@ -1,4 +1,4 @@
-function bool_close_points(x1,y1,x2,y2){
+function HasClosePoints(x1,y1,x2,y2){
     var e = 0.0001;
     return Math.abs(x1 - x2) <= e && Math.abs(y1 - y2) <= e;
 }
@@ -9,17 +9,14 @@ function setAttractorNewton(x, y, iter, number){
     var newY = 2*y*(1-x/ ((a+b)*(a+b)))/ 3;
     if (number == 0)
       return {att : 0, it : iter};
-    else if (bool_close_points(x, y, 1, 0))
+    else if (HasClosePoints(x, y, 1, 0))
       return {att : 1, it : iter};
-    else if (bool_close_points(x, y, -Math.cos(Math.PI/ 3), Math.sin(Math.PI/ 3)))
+    else if (HasClosePoints(x, y, -Math.cos(Math.PI/ 3), Math.sin(Math.PI/ 3)))
       return {att : 2, it : iter};
-    else if (bool_close_points(x, y, -Math.cos(Math.PI/ 3), -Math.sin(Math.PI/ 3)))
+    else if (HasClosePoints(x, y, -Math.cos(Math.PI/ 3), -Math.sin(Math.PI/ 3)))
       return {att : 3, it : iter};
     else
       return setAttractorNewton(newX, newY, iter + 1, number - 1);
-}
-function GetNewton(x,y){
-    return cvs.chooseColor(setAttractorNewton(x, y, 0, cvs.number));
 }
 //------
 function Mandel_Distances(x, y, number){
@@ -35,9 +32,6 @@ function Mandel_Distances(x, y, number){
     }
     return 0;
 }
-function GetMandelbrot(x, y){
-    return cvs.chooseColor(Mandel_Distances(x, y, cvs.number));
-}
 //--------
 function setIterJulia(x, y, a, b, number){
     var x0 = x, y0 = y, x1 = 0, y1 = 0, iter = 0;
@@ -51,7 +45,4 @@ function setIterJulia(x, y, a, b, number){
         ++iter;
     }
     return 0;
-}
-function GetJulia(x, y){
-    return cvs.chooseColor(setIterJulia(x, y, parseFloat(cvs.x), parseFloat(cvs.y), cvs.number));
 }
